@@ -4,3 +4,5 @@
 *.jar
 *.war
 *.ear
+/unitTests/Triangle/nbproject/private/
+/unitTests/Triangle/build/
