@@ -6,7 +6,7 @@ public interface IDependent {
 	//@ ensures GetEmployee() != null;
 	void SetEmployee(IEmployee employee);
 	
-	//@ requires !name.isEmpty();
+	//@ requires name.length() > 0;
 	//@ ensures GetName() == name;
 	void SetName(String name);
 	
