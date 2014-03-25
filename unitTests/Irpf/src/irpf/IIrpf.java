@@ -12,15 +12,15 @@ package irpf;
  */
 public interface IIrpf
 {
-    double getTotRendimentos();
-    void setTotRendimentos(double totRendimentos);
-    double getContrPrev();
-    void setContrPrev(double contrPrev);
-    int getNroDep();
-    void setNroDep(int nroDep);
-    int getIdade();
-    void setIdade(int idade); 
-    String getNome();
-    String getCpf();
-    double impostoDevido();      
+  double getTotRendimentos();
+  void setTotRendimentos(double totRendimentos);
+  double getContrPrev();
+  void setContrPrev(double contrPrev);
+  int getNroDep();
+  void setNroDep(int nroDep);
+  int getIdade();
+  void setIdade(int idade); 
+  String getNome();
+  String getCpf();
+  double impostoDevido();      
 }
