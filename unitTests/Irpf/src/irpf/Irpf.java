@@ -1,18 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package irpf;
-
-/*
-
-O construtor da classe Irpf recebe por parâmetro o nome e o 
-CPF do contribuinte. O total de rendimentos, a contribuição 
-previdenciária oficial, o número de dependentes e a idade 
-devem ser informados através de métodos “set”.
-*/
 
 /**
  *
@@ -125,16 +111,17 @@ public class Irpf implements IIrpf
       }      
     }
     
-    double impostoDevido = 0;
+    baseCalculo *= (1 - desconto);
+    
+    double impostoDevido = (baseCalculo - 12000) * 0.15;
     
     if (baseCalculo < 24000)
     {
-      return (baseCalculo - 12000) * 0.15;
+      return impostoDevido;
     }
     else
     {
-      double aux = (baseCalculo - 12000) * 0.15;
-      return aux + (baseCalculo - 24000) * 0.275;
+      return impostoDevido + (baseCalculo - 24000) * 0.275;
     }
   }
 }

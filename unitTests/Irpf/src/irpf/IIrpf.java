@@ -1,26 +1,42 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package irpf;
 
 /**
  *
- * @author 12180247
+ * @author Guilherme Taschetto
  */
 public interface IIrpf
 {
+  //@ pure;
   double getTotRendimentos();
+  
+  //@ ensures getTotRendimentos() == totRendimentos;
   void setTotRendimentos(double totRendimentos);
+  
+  //@ pure;
   double getContrPrev();
+  
+  //@ ensures getContrPrev() == contrPrev;
   void setContrPrev(double contrPrev);
+  
+  //@ pure;
   int getNroDep();
+  
+  //@ ensures getNroDep() == nroDep;
   void setNroDep(int nroDep);
+  
+  //@ pure;
   int getIdade();
+  
+  //@ ensures getIdade() == idade;
   void setIdade(int idade); 
+  
+  //@ pure;
   String getNome();
+  
+  //@ pure;
   String getCpf();
+  
+  //@ pure;
+  //@ ensures \result >= 0;
   double impostoDevido();      
 }
