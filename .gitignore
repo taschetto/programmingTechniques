@@ -6,3 +6,5 @@
 *.ear
 /unitTests/Triangle/nbproject/private/
 /unitTests/Triangle/build/
+/unitTests/Irpf/build/
+/unitTests/Irpf/dist/
