@@ -30,9 +30,7 @@ public class InicializadorBancoDados {
         String sqlLivro = "CREATE TABLE LIVROS("
                         + "CODIGO int PRIMARY KEY NOT NULL,"
                         + "TITULO varchar(100) NOT NULL,"
-                        + "ANO int NOT NULL,"
-                        + "CODEDITORA int NOT NULL,"
-                        + "CONSTRAINT FK_EDITORAS FOREIGN KEY (CODEDITORA) REFERENCES EDITORAS(CODIGO))";
+                        + "ANO int NOT NULL";
         sta.executeUpdate(sqlLivro);
         String sqlLivroAutor = "CREATE TABLE LIVROSAUTORES("
                              + "CODLIVRO int NOT NULL,"
@@ -41,6 +39,13 @@ public class InicializadorBancoDados {
                              + "CONSTRAINT FK_LIVROS FOREIGN KEY (CODLIVRO) REFERENCES LIVROS(CODIGO),"
                              + "CONSTRAINT FK_AUTORES FOREIGN KEY (CODAUTOR) REFERENCES AUTORES(CODIGO))";
         sta.executeUpdate(sqlLivroAutor);
+        String sqlLivroEditora = "CREATE TABLE LIVROSEDITORAS("
+                             + "CODLIVRO int NOT NULL,"
+                             + "CODEDITORA int NOT NULL,"
+                             + "CONSTRAINT PK_LIVROSEDITORAS PRIMARY KEY (CODLIVRO,CODEDITORA),"
+                             + "CONSTRAINT FK_LIVROS FOREIGN KEY (CODLIVRO) REFERENCES LIVROS(CODIGO),"
+                             + "CONSTRAINT FK_EDITORA FOREIGN KEY (CODEDITORA) REFERENCES EDITORA(CODIGO))";
+        sta.executeUpdate(sqlLivroEditora);        
         sta.close();
         con.close();
     }

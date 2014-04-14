@@ -8,16 +8,17 @@ public class Livro {
     private int codigo;
     private String titulo;
     private int ano;
-    private Editora editora;
+    private List<Editora> editoras;
     private List<Autor> autores;
 
     public Livro(int codigo, String titulo, int ano, Editora editora, Autor autor){
         this.codigo = codigo;
         this.titulo = titulo;
         this.ano = ano;
-        this.editora = editora;
-        autores = new ArrayList<>();
-        autores.add(autor);
+        this.editoras = new ArrayList<>();
+        this.editoras.add(editora);
+        this.autores = new ArrayList<>();
+        this.autores.add(autor);
     }
     
     public int getAno() {
@@ -32,12 +33,17 @@ public class Livro {
         return codigo;
     }
 
-    public Editora getEditora() {
-        return editora;
+    public List<Editora> getEditoras() {
+        return editoras;
     }
 
-    public void setEditora(Editora editora) {
-        this.editora = editora;
+    public boolean addEditora(Editora editora) {
+        for(Editora e : editoras) {
+            if(e.getCodigo() == editora.getCodigo()) {
+                return true; 
+            }
+        }
+        return editoras.add(editora);
     }
 
     public String getTitulo() {
@@ -63,7 +69,17 @@ public class Livro {
 
     @Override
     public String toString() {
-        String s = codigo + "," + titulo + "," + ano + ",[" + editora +"]";
+        String s = codigo + "," + titulo + "," + ano;
+        if(!editoras.isEmpty()){
+            StringBuilder completo = new StringBuilder(s);
+            for(Editora e : editoras) {
+                completo.append(",[");
+                completo.append(e.toString());
+                completo.append("]");
+            }
+            s = completo.toString();
+        }
+        
         if(!autores.isEmpty()){
             StringBuilder completo = new StringBuilder(s);
             for(Autor a : autores) {

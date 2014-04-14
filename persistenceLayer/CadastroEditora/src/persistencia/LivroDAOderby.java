@@ -193,9 +193,10 @@ public class LivroDAOderby implements LivroDAO{
     // exercício !!!
     public void inserir(Livro livro) throws DAOLivroException {
         Connection conexao;
-        PreparedStatement comandoLivros,comandoLivrosAutores;
-        String sqlLiv = "insert into livros(codigo,titulo,ano,codeditora) values(?,?,?,?)";
+        PreparedStatement comandoLivros,comandoLivrosAutores,comandoLivrosEditoras;
+        String sqlLiv = "insert into livros(codigo,titulo,ano) values(?,?,?)";
         String sqlLivAut = "insert into livrosautores(codlivro,codautor) values(?,?)";
+        String sqlLivEd = "insert into livroseditoras(codlivro,codeditora) values(?,?)";
         int resultado = 0;
         try {
 
@@ -205,13 +206,22 @@ public class LivroDAOderby implements LivroDAO{
             // Ou entao prever como pré-condicao em um contrato e eliminar
             // esta necessidade
             
-            // Recupera a editora
-            int codEditora = livro.getEditora().getCodigo();
-            Editora editora = edDAO.buscarPorCodigo(codEditora);
+            // Recupera as editoras
+            for(Editora e:livro.getEditoras()){
+                Editora busca = edDAO.buscarPorCodigo(e.getCodigo());
+                if (busca == null)
+                {
+                  throw new DAOLivroException("Editora '" + e.getCodigo() + "' não cadastrada.");
+                }
+            }
 
             // Recupera os autores
             for(Autor a:livro.getAutores()){
-                autDAO.buscarPorCodigo(a.getCodigo());
+                Autor busca = autDAO.buscarPorCodigo(a.getCodigo());
+                if (busca == null)
+                {
+                  throw new DAOLivroException("Autor '" + a.getCodigo() + "' não cadastrado.");
+                }
             }
 
             // Executa a inserção do livro propriamente dita
@@ -221,7 +231,6 @@ public class LivroDAOderby implements LivroDAO{
             comandoLivros.setInt(1, livro.getCodigo());
             comandoLivros.setString(2, livro.getTitulo());
             comandoLivros.setInt(3, livro.getAno());
-            comandoLivros.setInt(4,editora.getCodigo());
             resultado = comandoLivros.executeUpdate();
             comandoLivros.close();
             // Atualiza a tabela LivrosAutores
@@ -232,6 +241,14 @@ public class LivroDAOderby implements LivroDAO{
                 resultado += comandoLivrosAutores.executeUpdate();                
             }
             comandoLivrosAutores.close();
+            // Atualiza a tabela LivrosEditoras
+            comandoLivrosEditoras = conexao.prepareStatement(sqlLivEd);
+            for(Editora e:livro.getEditoras()){
+                comandoLivrosEditoras.setInt(1, livro.getCodigo());
+                comandoLivrosEditoras.setInt(2, e.getCodigo());
+                resultado += comandoLivrosEditoras.executeUpdate();                
+            }
+            comandoLivrosEditoras.close();            
             conexao.close();
         } catch (Exception e) {
             throw new DAOLivroException("Falha na inserção", e);
@@ -251,11 +268,16 @@ public class LivroDAOderby implements LivroDAO{
         PreparedStatement comando;
         PreparedStatement cmdApagar;
         PreparedStatement cmdLivrosAutores;
+        PreparedStatement cmdLivrosEditoras;
         
-        String sql = "update livros set titulo=?, ano=?, codeditora=? where codigo = ?";
+        String sql = "update livros set titulo=?, ano=? where codigo = ?";
         // Problemas na solução abaixo?????
         String sqlApagar = "delete from livrosautores where codlivro=?";
         String sqlLivAut = "insert into livrosautores(codlivro,codautor) values(?,?)";
+        
+        String sqlApagar2 = "delete from livroseditoras where codlivro=?";
+        String sqlLivEd = "insert into livroseditoras(codlivro,codeditora) values(?,?)";
+        
    
         int resultado = 0;
         try {
@@ -263,8 +285,7 @@ public class LivroDAOderby implements LivroDAO{
             comando = conexao.prepareStatement(sql);
             comando.setString(1, livro.getTitulo());
             comando.setInt(2, livro.getAno());
-            comando.setInt(3, livro.getEditora().getCodigo());
-            comando.setInt(4, livro.getCodigo());
+            comando.setInt(3, livro.getCodigo());
             resultado = comando.executeUpdate();
             comando.close();
             
@@ -272,6 +293,11 @@ public class LivroDAOderby implements LivroDAO{
             cmdApagar.setInt(1, livro.getCodigo());
             cmdApagar.executeUpdate();
             cmdApagar.close();
+            
+            cmdApagar = conexao.prepareStatement(sqlApagar2);
+            cmdApagar.setInt(1, livro.getCodigo());
+            cmdApagar.executeUpdate();
+            cmdApagar.close();            
             
             // Atualiza a tabela LivrosAutores
             cmdLivrosAutores = conexao.prepareStatement(sqlLivAut);
@@ -281,6 +307,15 @@ public class LivroDAOderby implements LivroDAO{
                 resultado += cmdLivrosAutores.executeUpdate();                
             }
             cmdLivrosAutores.close();
+            
+            // Atualiza a tabela LivrosEditoras
+            cmdLivrosEditoras = conexao.prepareStatement(sqlLivEd);
+            for(Editora e:livro.getEditoras()){
+                cmdLivrosEditoras.setInt(1, livro.getCodigo());
+                cmdLivrosEditoras.setInt(2, e.getCodigo());
+                resultado += cmdLivrosEditoras.executeUpdate();                
+            }
+            cmdLivrosEditoras.close();            
             
             conexao.close();
         } catch (Exception e) {
