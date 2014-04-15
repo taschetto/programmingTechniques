@@ -3,9 +3,12 @@ package persistencia;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import negocio.Autor;
 import negocio.AutorDAO;
 import negocio.DAOLivroException;
@@ -224,8 +227,8 @@ public class LivroDAOderby implements LivroDAO{
                 }
             }
 
-            // Executa a inserção do livro propriamente dita
             conexao = InicializadorBancoDados.conectarBd();
+            conexao.setAutoCommit(false);
             // Insere o Livro na tabela Livros
             comandoLivros = conexao.prepareStatement(sqlLiv);
             comandoLivros.setInt(1, livro.getCodigo());
@@ -248,11 +251,19 @@ public class LivroDAOderby implements LivroDAO{
                 comandoLivrosEditoras.setInt(2, e.getCodigo());
                 resultado += comandoLivrosEditoras.executeUpdate();                
             }
-            comandoLivrosEditoras.close();            
-            conexao.close();
+            comandoLivrosEditoras.close();
+            try
+            {
+                conexao.commit();
+            } catch (SQLException ex)
+            {
+                conexao.rollback();
+                throw ex;
+            }
         } catch (Exception e) {
             throw new DAOLivroException("Falha na inserção", e);
         }
+            
         // Verifica se foi feita a inserção de 1 livro e de "size" referencias
         // para autores na tabela livrosautores
         /*
