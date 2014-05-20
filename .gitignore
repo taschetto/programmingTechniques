@@ -13,3 +13,7 @@
 /persistenceLayer/exercicioJDBC2/nbproject/private/
 /persistenceLayer/exercicioJDBC2/build/
 *.zip
+!/designPatterns/IrpfAppSimplificadoDerby/derby.jar
+!/designPatterns/IrpfAppSimplificadoDerby/Contribuintes.dat
+!/designPatterns/IrpfAppSimplificadoDerby/derbyDB/log/log1.dat
+!/designPatterns/IrpfAppSimplificadoDerby/derbyDB/seg0/*

@@ -62,16 +62,6 @@ public class IrpfFachada {
     }
 
     public double calcula(TipoCalculo t, String cpf) throws IrpfException {
-        CalculoIrpf ir = null;
-        switch(t)
-        {
-            case COMPLETO:
-                ir = new CalculoCompleto();
-                break;
-            case SIMPLIFICADO:
-                ir = new CalculoSimplificado();
-                break;
-        }
         Contribuinte c;
         try {
             c = cadContribuinte.buscar(cpf);
@@ -81,6 +71,7 @@ public class IrpfFachada {
         if (c == null) {
             throw new IrpfException("CPF inexistente: " + cpf);
         }
+        CalculoIrpf ir = CalculoIrpfFactory.createInstance(t);
         return ir.impostoDevido(c);
     }
 }

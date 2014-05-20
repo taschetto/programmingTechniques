@@ -5,5 +5,9 @@ package Negocio;
  * @author bcopstein
  */
 public enum TipoCalculo {
-    COMPLETO,SIMPLIFICADO;
+    COMPLETO,
+    SIMPLIFICADO,
+    /*** BEGIN EXERCÍCIO 3 ***/
+    NATURALIZADO;
+    /*** END EXERCÍCIO 3 ***/
 }

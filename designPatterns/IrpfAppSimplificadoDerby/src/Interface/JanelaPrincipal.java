@@ -70,6 +70,7 @@ public class JanelaPrincipal extends javax.swing.JFrame {
         butCalcSimples = new javax.swing.JButton();
         butCalcCompleto = new javax.swing.JButton();
         butConsIdosos = new javax.swing.JButton();
+        butCalcNaturalizado = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("IRPF");
@@ -127,6 +128,13 @@ public class JanelaPrincipal extends javax.swing.JFrame {
             }
         });
 
+        butCalcNaturalizado.setText("CalculaNaturalizado");
+        butCalcNaturalizado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                butCalcNaturalizadoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -135,33 +143,6 @@ public class JanelaPrincipal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addGap(18, 18, 18)
-                                .addComponent(tfIdade, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel4)
-                                .addGap(18, 18, 18)
-                                .addComponent(tfDependentes, javax.swing.GroupLayout.DEFAULT_SIZE, 217, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addGap(18, 18, 18)
-                                .addComponent(tfContrPrev, javax.swing.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addGap(18, 18, 18)
-                                .addComponent(tfTotRend, javax.swing.GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jLabel2))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(tfNome, javax.swing.GroupLayout.DEFAULT_SIZE, 357, Short.MAX_VALUE)
-                                    .addComponent(tfCPF, javax.swing.GroupLayout.DEFAULT_SIZE, 357, Short.MAX_VALUE))))
-                        .addGap(46, 46, 46))
-                    .addGroup(layout.createSequentialGroup()
                         .addComponent(btSalva)
                         .addGap(18, 18, 18)
                         .addComponent(btSel)
@@ -169,11 +150,37 @@ public class JanelaPrincipal extends javax.swing.JFrame {
                         .addComponent(butCalcSimples)
                         .addGap(18, 18, 18)
                         .addComponent(butCalcCompleto)
-                        .addContainerGap(46, Short.MAX_VALUE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(butCalcNaturalizado))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(18, 18, 18)
+                        .addComponent(tfIdade, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel4)
+                        .addGap(18, 18, 18)
+                        .addComponent(tfDependentes))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addGap(18, 18, 18)
+                        .addComponent(tfContrPrev))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addGap(18, 18, 18)
+                        .addComponent(tfTotRend))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(tfNome)
+                            .addComponent(tfCPF))))
+                .addGap(46, 46, 46))
             .addGroup(layout.createSequentialGroup()
                 .addGap(61, 61, 61)
                 .addComponent(butConsIdosos)
-                .addContainerGap(258, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -205,7 +212,8 @@ public class JanelaPrincipal extends javax.swing.JFrame {
                     .addComponent(btSalva)
                     .addComponent(btSel)
                     .addComponent(butCalcSimples)
-                    .addComponent(butCalcCompleto))
+                    .addComponent(butCalcCompleto)
+                    .addComponent(butCalcNaturalizado))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(butConsIdosos)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -276,6 +284,21 @@ public class JanelaPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_butConsIdososActionPerformed
 
+    /*** BEGIN EXERCÍCIO 3 ***/
+    private void butCalcNaturalizadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butCalcNaturalizadoActionPerformed
+        try {
+            double calc = controlador.calcula(TipoCalculo.NATURALIZADO);
+            String cpfContribuinte = controlador.getCorrente();
+            DlgCalculo dCalc = new DlgCalculo(this, true, calc, cpfContribuinte);
+            dCalc.setVisible(true);
+        } catch (ContribuinteInexistenteException ex) {
+            JOptionPane.showMessageDialog(this, "Contribuinte inexistente.");
+        } catch (IrpfException ex) {
+            JOptionPane.showMessageDialog(this, "Falha ao calcular imposto. " + ex.getMessage());
+        }
+    }//GEN-LAST:event_butCalcNaturalizadoActionPerformed
+    /*** END EXERCÍCIO 3 ***/
+    
     /**
      * @param args the command line arguments
      */
@@ -290,6 +313,7 @@ public class JanelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton btSalva;
     private javax.swing.JButton btSel;
     private javax.swing.JButton butCalcCompleto;
+    private javax.swing.JButton butCalcNaturalizado;
     private javax.swing.JButton butCalcSimples;
     private javax.swing.JButton butConsIdosos;
     private javax.swing.JLabel jLabel1;
