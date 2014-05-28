@@ -19,3 +19,7 @@
 !/designPatterns/IrpfAppSimplificadoDerby/derbyDB/seg0/*
 /threads/Matrix/nbproject/private/
 /threads/Matrix/build/
+/tf/Examiner/nbproject/private/
+
+!/tf/Examiner/lib/*
+!/tf/Examiner/lib/CopyLibs/*
