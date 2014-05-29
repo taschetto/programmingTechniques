@@ -24,16 +24,48 @@
 
 package persistence;
 
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class DatabaseManager {
+public class DatabaseManager
+{
+  private static final String databaseName = "examiner";
   
-  private static final String dbName = "examiner";
-  
-  public static Connection getConnection() throws SQLException {
-    return DriverManager.getConnection("jdbc:derby:" + dbName);
+  public static Connection getConnection() throws DAOException
+  {
+    try
+    {
+      return DriverManager.getConnection("jdbc:derby:" + databaseName);
+    }
+    catch (SQLException e)
+    {
+      return createDatabase();
+    }
   }
   
+  public static Connection createDatabase() throws DAOException
+  {
+    try
+    {
+      try (Connection connection = DatabaseManager.getConnection())
+      {
+        try (Statement statement = connection.createStatement())
+        {
+          final String pathToSQLFile = "resources/databaseDefinition.sql";
+          InputStream inputStream = DatabaseManager.class.getResourceAsStream(pathToSQLFile);
+          String sql = new Scanner(inputStream).useDelimiter("\\Z").next();
+          statement.executeUpdate(sql);
+        }
+      }
+    }
+    catch (SQLException e) {
+        throw new DAOException(e);
+    }    
+  }
 }
