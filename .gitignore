@@ -23,3 +23,5 @@
 
 !/tf/Examiner/lib/*
 !/tf/Examiner/lib/CopyLibs/*
+/tf/Examiner/build/
+/tf/Examiner/dist/
