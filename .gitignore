@@ -25,3 +25,5 @@
 !/tf/Examiner/lib/CopyLibs/*
 /tf/Examiner/build/
 /tf/Examiner/dist/
+/mvc/Temperature/nbproject/private/
+/mvc/Temperature/build/
